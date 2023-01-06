@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+}
+
+#content {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 105px 1fr;
+    grid-template-columns: max(250px, 20vw) 1fr;
+}
+
+#header {
+    grid-column: 1/3;
+    background-color: #6bc0d0;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+}
+
+#title-holder {
+    display: flex;
+    align-items: center;
+}
+
+#title-text {
+    font-size: 32px;
+    margin-top: 6px;
+    font-style: bold;
+    font-family: fantasy;
+}
+
+#check-pic {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+#side-bar {
+    background-color: #eff8fa;
+}
