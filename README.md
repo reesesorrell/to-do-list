@@ -1,1 +1,1 @@
-# to-do-list
+The goal of this project is to create a fully functional to-do list web app which also incorporates local storage to keep users data. The app will be written primarily in Javascript and CSS. It will be taken from source code to distribution using npm webpack.
