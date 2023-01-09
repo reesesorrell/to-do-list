@@ -1,5 +1,6 @@
 import displayAdder from "./helper";
 import checkPic from "./img/check.png";
+import Todo from "./object-functions";
 
 const populateHomePage = () => {
     const parent = document.getElementById('content');
