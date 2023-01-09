@@ -26,7 +26,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helper */ \"./src/helper.js\");\n/* harmony import */ var _img_check_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./img/check.png */ \"./src/img/check.png\");\n\n\n\nconst populateHomePage = () => {\n    const parent = document.getElementById('content');\n    \n    const header = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(parent, '', 'header');\n    \n    const titleHolder = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(header, '', 'title-holder');\n\n    _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createImage(titleHolder, _img_check_png__WEBPACK_IMPORTED_MODULE_1__, 'check-pic');\n\n    _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(titleHolder, 'To Do List', 'title-text');\n    \n    const sideBar = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(parent, '', 'side-bar');\n\n    const mainSpace = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(parent, '', 'main-space');\n}\n\npopulateHomePage();\n\n//# sourceURL=webpack://to-do-list/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helper */ \"./src/helper.js\");\n/* harmony import */ var _img_check_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./img/check.png */ \"./src/img/check.png\");\n/* harmony import */ var _object_functions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./object-functions */ \"./src/object-functions.js\");\n\n\n\n\nconst populateHomePage = () => {\n    const parent = document.getElementById('content');\n    \n    const header = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(parent, '', 'header');\n    \n    const titleHolder = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(header, '', 'title-holder');\n\n    _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createImage(titleHolder, _img_check_png__WEBPACK_IMPORTED_MODULE_1__, 'check-pic');\n\n    _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(titleHolder, 'To Do List', 'title-text');\n    \n    const sideBar = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(parent, '', 'side-bar');\n\n    const mainSpace = _helper__WEBPACK_IMPORTED_MODULE_0__[\"default\"].createDiv(parent, '', 'main-space');\n}\n\npopulateHomePage();\n\n//# sourceURL=webpack://to-do-list/./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/object-functions.js":
+/*!*********************************!*\
+  !*** ./src/object-functions.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst Todo = (title, date, description, completed=false) => {\n    return {title, date, description, completed}\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Todo);\n\n//# sourceURL=webpack://to-do-list/./src/object-functions.js?");
 
 /***/ }),
 
