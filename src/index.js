@@ -15,6 +15,12 @@ const populateHomePage = () => {
     
     const sideBar = displayAdder.createDiv(parent, '', 'side-bar');
 
+    const tabNames = ['Home', 'Today', 'Week', 'Projects'];
+    for (let i = 0; i<4; i++) {
+        let thisTab = tabNames[i];
+        displayAdder.createDiv(sideBar, thisTab, thisTab + '-tab', 'side-bar-text,title-text');
+    }
+
     const mainSpace = displayAdder.createDiv(parent, '', 'main-space');
 }
 
