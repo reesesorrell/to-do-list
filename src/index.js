@@ -1,6 +1,6 @@
 import displayAdder from "./helper";
 import checkPic from "./img/check.png";
-import Todo from "./object-functions";
+import { makeProjectForm } from "./dom-functions";
 
 const populateHomePage = () => {
     const parent = document.getElementById('content');
@@ -16,10 +16,12 @@ const populateHomePage = () => {
     const sideBar = displayAdder.createDiv(parent, '', 'side-bar');
 
     const tabNames = ['Home', 'Today', 'Week', 'Projects'];
-    for (let i = 0; i<4; i++) {
+    for (let i = 0; i<tabNames.length; i++) {
         let thisTab = tabNames[i];
-        displayAdder.createDiv(sideBar, thisTab, thisTab + '-tab', 'side-bar-text,title-text');
+        displayAdder.createDiv(sideBar, thisTab, thisTab.toLowerCase() + '-tab', 'side-bar-text,title-text');
     }
+    
+    displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
 
     const mainSpace = displayAdder.createDiv(parent, '', 'main-space');
 }
