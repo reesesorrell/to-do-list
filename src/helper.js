@@ -1,11 +1,7 @@
 
 const displayAdder = (function() {
     const createDiv = (parentElement, textContent='', divId='', divClass='') => {
-        const newDiv = document.createElement('div');
-        newDiv.textContent = textContent;
-        _addClasses(newDiv, divClass);
-        newDiv.id = divId;
-        parentElement.appendChild(newDiv)
+        const newDiv = _createElement(parentElement, 'div', textContent, divId, divClass)
         return newDiv;
     }
 
@@ -19,13 +15,18 @@ const displayAdder = (function() {
     }
 
     const createButton = (parentElement, onclickFunction, textContent='', buttonId = '', buttonClass='') => {
-        const newButton = document.createElement('button');
-        newButton.textContent = textContent;
-        _addClasses(newButton, buttonClass);
-        newButton.id = buttonId;
+        const newButton = _createElement(parentElement, 'button', textContent, buttonId, buttonClass);
         newButton.onclick = onclickFunction;
-        parentElement.appendChild(newButton);
         return newButton;
+    }
+
+    const _createElement = (parentElement, elementType, textContent='', elementId='', elementClass='') => {
+        const newElement = document.createElement(elementType);
+        _addClasses(newElement, elementClass);
+        newElement.id = elementId;
+        newElement.textContent = textContent;
+        parentElement.appendChild(newElement)
+        return newElement;
     }
 
     const _addClasses = (element, classes) => {
