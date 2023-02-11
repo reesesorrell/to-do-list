@@ -1,8 +1,7 @@
 
 const displayAdder = (function() {
     const createDiv = (parentElement, textContent='', divId='', divClass='') => {
-        const newDiv = _createElement(parentElement, 'div', textContent, divId, divClass)
-        return newDiv;
+        return _createElement(parentElement, 'div', textContent, divId, divClass);
     }
 
     const createImage = (parentElement, imageSource, imageId='', imageClass='') => {
@@ -18,6 +17,17 @@ const displayAdder = (function() {
         const newButton = _createElement(parentElement, 'button', textContent, buttonId, buttonClass);
         newButton.onclick = onclickFunction;
         return newButton;
+    }
+
+    const createForm = (parentElement, textContent='', formId='', formClass='') => {
+        return _createElement(parentElement, 'form', textContent, formId, formClass);
+    }
+
+    const createInput = (parentElement, inputType, inputName, textContent='', inputId='', inputClass='') => {
+        const newInput = _createElement(parentElement, 'input', textContent, inputId, inputClass);
+        newInput.type = inputType;
+        newInput.name = inputName;
+        return newInput;
     }
 
     const _createElement = (parentElement, elementType, textContent='', elementId='', elementClass='') => {
@@ -38,7 +48,7 @@ const displayAdder = (function() {
         }
     }
 
-    return {createDiv, createImage, createButton};
+    return {createDiv, createImage, createButton, createForm, createInput};
 })();
 
 export default displayAdder;
