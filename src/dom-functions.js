@@ -1,6 +1,7 @@
 import {Todo, Project} from "./object-functions";
 import displayAdder from "./helper";
 
+//create text input for a new porject when the add project button is clicked
 const makeProjectForm = () => {
     const newProjectButton = document.getElementById("new-project-button");
     newProjectButton.remove();
@@ -18,6 +19,7 @@ const makeProjectForm = () => {
     displayAdder.createButton(projectFormContainer, deleteProjectForm, 'Cancel', 'remove-project-form-button', 'project-button');
 }
 
+//delete the project form box, triggered when a project is added or canceled
 const deleteProjectForm = () => {
     const container = document.getElementById('project-form-container');
     container.innerHTML = '';
@@ -25,11 +27,13 @@ const deleteProjectForm = () => {
     makeProjectAddButton();
 }
 
+//remake the add project button after the input box is removed
 const makeProjectAddButton = () => {
     const sideBar = document.getElementById('side-bar');
     displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
 }
 
+//create a project with the name that is entered in the input
 const makeProject = (e) => {
     e.preventDefault();
     const inputField = document.getElementById('project-form');
@@ -39,6 +43,7 @@ const makeProject = (e) => {
     deleteProjectForm();
 }
 
+//take the project object and create a display using its title
 const addProjectToDisplay = (projectObject) => {
     const sideBar = document.getElementById('side-bar');
     var projectName = projectObject.title;
@@ -47,24 +52,31 @@ const addProjectToDisplay = (projectObject) => {
     projectTab.onmouseleave = removeDeleteProjectButton;
 }
 
-function makeDeleteProjectButton() {
-    const removeProjectButton = displayAdder.createButton(this, deleteProject, 'X', this.textContent + '-project');
+//remove the x that appears on a project tab when a user moves the mouse off the project
+function removeDeleteProjectButton() {
+    this.firstElementChild.remove();
 }
 
+//add an x that appears on hover of a project tab
+function makeDeleteProjectButton() {
+    displayAdder.createButton(this, deleteProject, 'X', this.textContent + '-project');
+}
+
+//remove project tab and take the project object off of the window array
 function deleteProject() {
     var projectButton = this.parentElement
+    var projectTitle = projectButton.textContent.slice(0,-1);
+    //search for the project by its name and remove it
     for (let i = 0; i<window.projectArray.length; i++) {
-        if (window.projectArray[i].title == projectButton.textContent) {
-            delete window.projectArray[i];
+        console.log(window.projectArray[i].title);
+        if (window.projectArray[i].title == projectTitle) {
+            window.projectArray.splice(i, 1);
         }
     }
     projectButton.remove();
 }
 
-function removeDeleteProjectButton() {
-    this.firstElementChild.remove();
-}
-
+//display all to-do objects in the project object
 function browseToProject() {
     // this = project;
     return;
