@@ -2,6 +2,8 @@ import displayAdder from "./helper";
 import checkPic from "./img/check.png";
 import { makeProjectForm } from "./dom-functions";
 
+window.projectArray = [];
+
 const populateHomePage = () => {
     const parent = document.getElementById('content');
     

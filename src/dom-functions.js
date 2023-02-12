@@ -25,27 +25,49 @@ const deleteProjectForm = () => {
     makeProjectAddButton();
 }
 
+const makeProjectAddButton = () => {
+    const sideBar = document.getElementById('side-bar');
+    displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
+}
+
 const makeProject = (e) => {
     e.preventDefault();
     const inputField = document.getElementById('project-form');
     const newProject = Project(inputField.value);
+    window.projectArray.push(newProject);
     addProjectToDisplay(newProject);
     deleteProjectForm();
 }
 
 const addProjectToDisplay = (projectObject) => {
     const sideBar = document.getElementById('side-bar');
-    var projecName = projectObject.title;
-    displayAdder.createButton(sideBar, browseToProject, projecName, projecName + '-project-tab', 'sidebar-button,current-project-button');
+    var projectName = projectObject.title;
+    const projectTab = displayAdder.createButton(sideBar, browseToProject.bind(projectObject), projectName, projectName + '-project-tab', 'sidebar-button,current-project-button');
+    projectTab.onmouseenter = makeDeleteProjectButton;
+    projectTab.onmouseleave = removeDeleteProjectButton;
 }
 
-const browseToProject = () => {
+function makeDeleteProjectButton() {
+    const removeProjectButton = displayAdder.createButton(this, deleteProject, 'X', this.textContent + '-project');
+}
+
+function deleteProject() {
+    var projectButton = this.parentElement
+    for (let i = 0; i<window.projectArray.length; i++) {
+        if (window.projectArray[i].title == projectButton.textContent) {
+            delete window.projectArray[i];
+        }
+    }
+    projectButton.remove();
+}
+
+function removeDeleteProjectButton() {
+    this.firstElementChild.remove();
+}
+
+function browseToProject() {
+    // this = project;
     return;
-}
-
-const makeProjectAddButton = () => {
-    const sideBar = document.getElementById('side-bar');
-    displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
 }
 
 export {makeProjectForm};
