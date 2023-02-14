@@ -4,7 +4,11 @@ const Todo = (title, date, description, completed=false) => {
 }
 
 const Project = (title) => {
-    return {title};
+    var toDoList = []
+    const addToDo = (toDo) => {
+        toDoList.push(toDo);
+    }
+    return {title, toDoList, addToDo};
 }
 
 export {Todo, Project};

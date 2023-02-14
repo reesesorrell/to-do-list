@@ -79,6 +79,23 @@ function deleteProject() {
 //display all to-do objects in the project object
 function browseToProject() {
     // this = project;
+    const mainSpace = document.getElementById('main-space');
+    mainSpace.innerHTML = '';
+    const titleRow = displayAdder.createDiv(mainSpace, '', 'title-row');
+    displayAdder.createDiv(titleRow, this.title, 'project-title', 'title-text');
+    displayAdder.createButton(titleRow, reverseSort, 'Due Date Order', 'reverse-button');
+    const toDoDisplay = displayAdder.createDiv(mainSpace, '', 'to-do-display');
+    const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
+    addTaskButton.onclick = createToDoForm;
+}
+
+//make to-do creation form
+const createToDoForm = () => {
+    return;
+}
+
+//reverse order of to-do list
+const reverseSort = () => {
     return;
 }
 

@@ -25,7 +25,7 @@ const populateHomePage = () => {
     
     displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
 
-    const mainSpace = displayAdder.createDiv(parent, '', 'main-space');
+    displayAdder.createDiv(parent, '', 'main-space');
 }
 
 populateHomePage();
