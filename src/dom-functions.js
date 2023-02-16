@@ -85,13 +85,55 @@ function browseToProject() {
     displayAdder.createDiv(titleRow, this.title, 'project-title', 'title-text');
     displayAdder.createButton(titleRow, reverseSort, 'Due Date Order', 'reverse-button');
     const toDoDisplay = displayAdder.createDiv(mainSpace, '', 'to-do-display');
+
+    //FIXME: display all to-dos inside the project
+
     const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
     addTaskButton.onclick = createToDoForm;
 }
 
 //make to-do creation form
 const createToDoForm = () => {
+    document.getElementById('add-task-button').remove();
+    const parentDiv = document.getElementById('to-do-display');
+    const formContainer = displayAdder.createForm(parentDiv, '', 'to-do-form');
+    formContainer.addEventListener('submit', getToDo);
+
+    const titleInput = displayAdder.createInput(formContainer, 'text', 'title', '', 'to-do-title-input', 'to-do-form-input');
+    titleInput.placeholder = 'Title: Mow Lawn'
+
+    const descriptionInput = document.createElement('textarea');
+    descriptionInput.name = 'description';
+    descriptionInput.id = 'to-do-description-input';
+    descriptionInput.classList.add('to-do-form-input');
+    descriptionInput.rows = '5';
+    descriptionInput.cols = '35';
+    descriptionInput.placeholder = 'Details: eg. mow in straight lines'
+    formContainer.appendChild(descriptionInput);
+
+    const dateInput = displayAdder.createInput(formContainer, 'date', 'date', '', 'to-do-date-input', 'to-do-form-input');
+    const projectInput = displayAdder.createInput(formContainer, 'text', 'project', '', 'to-do-project-input', 'to-do-form-input');
+    projectInput.placeholder = 'Project';
+    const submitButton = displayAdder.createInput(formContainer, 'submit', 'submit', 'Submit', 'to-do-submit-button', 'project-button');
+    const deleteButton = displayAdder.createButton(formContainer, deleteToDoForm, 'Cancel', 'to-do-form-delete-button', 'project-button');
+}
+
+//handle to-do form submit
+const getToDo = (e) => {
+    e.preventDefault();
+    console.log(e);
     return;
+}
+
+//delete to do form and add back new to-do button
+const deleteToDoForm = () => {
+    const formContainer = document.getElementById('to-do-form');
+    formContainer.innerHTML = '';
+    formContainer.remove();
+
+    const toDoDisplay = document.getElementById('to-do-display');
+    const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
+    addTaskButton.onclick = createToDoForm;
 }
 
 //reverse order of to-do list

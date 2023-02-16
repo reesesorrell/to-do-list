@@ -13,12 +13,17 @@ input[type=submit] {
     border: none;
 }
 
-input[type=text] {
+input[type=text],
+textarea {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: large;
     font-weight: 300;
     padding-left: 8px;
 }
+
+textarea {
+    resize: none;
+  }
 
 #content {
     width: 100vw;
@@ -175,4 +180,38 @@ input[type=text] {
 
 .to-do-row:hover {
     cursor: pointer;
+}
+
+#to-do-form {
+    align-self: flex-start;
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    border: #6bc0d0 solid .2px;
+    padding: 10px;
+    border-radius: 5%;
+    align-items: center;
+    justify-items: center;
+}
+
+.to-do-form-input {
+   border: none;
+}
+
+#to-do-title-input,
+#to-do-description-input {
+    grid-column: 1/6;
+    width: 93.5%;
+}
+ 
+#to-do-description-input {
+    height: 60px;
+}
+
+#to-do-project-input {
+    width: 80%;
+}
+
+#to-do-date-input {
+    width: 80%;
 }
