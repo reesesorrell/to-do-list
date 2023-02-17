@@ -1,4 +1,5 @@
 import {Todo, Project} from "./object-functions";
+import { compareAsc } from 'date-fns';
 import displayAdder from "./helper";
 
 //create text input for a new porject when the add project button is clicked
@@ -68,7 +69,6 @@ function deleteProject() {
     var projectTitle = projectButton.textContent.slice(0,-1);
     //search for the project by its name and remove it
     for (let i = 0; i<window.projectArray.length; i++) {
-        console.log(window.projectArray[i].title);
         if (window.projectArray[i].title == projectTitle) {
             window.projectArray.splice(i, 1);
         }
@@ -86,10 +86,20 @@ function browseToProject() {
     displayAdder.createButton(titleRow, reverseSort, 'Due Date Order', 'reverse-button');
     const toDoDisplay = displayAdder.createDiv(mainSpace, '', 'to-do-display');
 
-    //FIXME: display all to-dos inside the project
+    displayToDos(this);
 
     const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
     addTaskButton.onclick = createToDoForm;
+}
+
+const displayToDos = (project) => {
+    const toDoDisplay = document.getElementById('to-do-display');
+    let toDos = project.toDoList;
+    for(let i = 0; i < toDos.length; i++) {
+        const toDo = toDos[i];
+        const toDoContainer = displayAdder.createDiv(toDoDisplay, '', '', 'to-do-container,to-do-row');
+        displayAdder.createDiv(toDoContainer, toDo.title);
+    }
 }
 
 //make to-do creation form
@@ -97,7 +107,7 @@ const createToDoForm = () => {
     document.getElementById('add-task-button').remove();
     const parentDiv = document.getElementById('to-do-display');
     const formContainer = displayAdder.createForm(parentDiv, '', 'to-do-form');
-    formContainer.addEventListener('submit', getToDo);
+    formContainer.addEventListener('submit', makeToDo);
 
     const titleInput = displayAdder.createInput(formContainer, 'text', 'title', '', 'to-do-title-input', 'to-do-form-input');
     titleInput.placeholder = 'Title: Mow Lawn'
@@ -119,10 +129,50 @@ const createToDoForm = () => {
 }
 
 //handle to-do form submit
-const getToDo = (e) => {
+const makeToDo = (e) => {
     e.preventDefault();
-    console.log(e);
-    return;
+
+    var name = document.getElementById('to-do-title-input').value;
+    var description = document.getElementById('to-do-description-input').value;
+    var date = document.getElementById('to-do-date-input').value;
+    var year = parseInt(date.slice(0,4));
+    var month = parseInt(date.slice(5, 7));
+    var day = parseInt(date.slice(8,10));
+    var dateObject = new Date(year, month, day);
+    var projectName = document.getElementById('to-do-project-input').value;
+    const toDo = Todo(name, description, dateObject, projectName);
+
+    deleteToDoForm();
+
+    if (projectName) {
+        addToProject(toDo, projectName);
+    }
+    else {
+        const defaultProject = document.getElementById('project-title').textContent;
+        addToProject(toDo, defaultProject);
+    }
+}
+
+const addToProject = (toDo, projectName) => {
+    let projectExists = false;
+    for (let i = 0; i < window.projectArray.length; i++) {
+        if (window.projectArray[i].title == projectName) {
+            window.projectArray[i].addToDo(toDo);
+            browseToProject.apply(window.projectArray[i]);
+            projectExists = true;
+        }
+    }
+    if (projectExists != true) {
+        document.getElementById('new-project-button').remove();
+
+        const newProject = Project(projectName);
+        window.projectArray.push(newProject);
+        newProject.addToDo(toDo);
+        addProjectToDisplay(newProject);
+        browseToProject.apply(newProject);
+
+        makeProjectAddButton();
+    }
 }
 
 //delete to do form and add back new to-do button
@@ -141,4 +191,4 @@ const reverseSort = () => {
     return;
 }
 
-export {makeProjectForm};
+export {makeProjectForm, browseToProject};

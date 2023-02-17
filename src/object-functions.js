@@ -1,6 +1,6 @@
 
-const Todo = (title, date, description, completed=false) => {
-    return {title, date, description, completed}
+const Todo = (title, date, description, project, completed=false) => {
+    return {title, date, description, project, completed}
 }
 
 const Project = (title) => {

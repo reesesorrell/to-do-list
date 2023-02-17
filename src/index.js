@@ -1,8 +1,10 @@
 import displayAdder from "./helper";
 import checkPic from "./img/check.png";
 import { makeProjectForm } from "./dom-functions";
+import { Project } from "./object-functions";
 
-window.projectArray = [];
+const defaultProject = Project('General');
+window.projectArray = [defaultProject];
 
 const populateHomePage = () => {
     const parent = document.getElementById('content');
@@ -17,6 +19,8 @@ const populateHomePage = () => {
     
     const sideBar = displayAdder.createDiv(parent, '', 'side-bar');
 
+    displayAdder.createDiv(parent, '', 'main-space');
+
     const tabNames = ['Home', 'Today', 'Week', 'Projects'];
     for (let i = 0; i<tabNames.length; i++) {
         let thisTab = tabNames[i];
@@ -25,7 +29,6 @@ const populateHomePage = () => {
     
     displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
 
-    displayAdder.createDiv(parent, '', 'main-space');
 }
 
 populateHomePage();
