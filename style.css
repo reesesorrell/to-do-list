@@ -164,7 +164,7 @@ textarea {
 
 #to-do-display {
     display: grid;
-    grid-auto-rows: 40px;
+    grid-auto-rows: minmax(40px, max-content);
     align-items: center;
     padding-top: 10px;
 }
