@@ -1,5 +1,5 @@
 import {Todo, Project} from "./object-functions";
-import { compareAsc } from 'date-fns';
+import { compareAsc, format } from 'date-fns';
 import displayAdder from "./helper";
 
 //create text input for a new porject when the add project button is clicked
@@ -98,8 +98,20 @@ const displayToDos = (project) => {
     for(let i = 0; i < toDos.length; i++) {
         const toDo = toDos[i];
         const toDoContainer = displayAdder.createDiv(toDoDisplay, '', '', 'to-do-container,to-do-row');
+        displayAdder.createInput(toDoContainer, 'checkbox', 'completed');
         displayAdder.createDiv(toDoContainer, toDo.title);
+        displayAdder.createDiv(toDoContainer, format(toDo.date, 'MM/dd/yyyy'));
+        displayAdder.createButton(toDoContainer, editToDo, 'Edit', 'edit-to-do-button');
+        displayAdder.createButton(toDoContainer, deleteToDo, 'Delete', 'delete-to-do-button');
     }
+}
+
+const editToDo = () => {
+    return;
+}
+
+const deleteToDo = () => {
+    return;
 }
 
 //make to-do creation form

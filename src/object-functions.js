@@ -1,5 +1,5 @@
 
-const Todo = (title, date, description, project, completed=false) => {
+const Todo = (title, description, date, project, completed=false) => {
     return {title, date, description, project, completed}
 }
 
