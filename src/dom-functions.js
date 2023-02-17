@@ -106,12 +106,57 @@ const displayToDos = (project) => {
     }
 }
 
-const editToDo = () => {
-    return;
+function editToDo() {
+    var projectName = this.parentElement.parentElement.parentElement.children[0].children[0].textContent;
+    var toDoName = this.parentElement.children[1].textContent;
+
+    for (let i = 0; i<window.projectArray.length; i++) {
+        if (window.projectArray[i].title == projectName) {
+            var currentProject = window.projectArray[i];
+            var toDoList = currentProject.toDoList;
+            for (let j = 0; j < toDoList.length; j++) {
+                if (toDoList[j].title == toDoName) {
+                    var currentToDo = toDoList[j];
+                    var toDoDescription = currentToDo.description;
+                    var toDoDate = currentToDo.date;
+                    var toDoProject = currentToDo.project;
+                    currentProject.toDoList.splice(j, 1);
+                }
+            }
+        }
+    }
+
+    const toDoDisplay = document.getElementById('to-do-display');
+    const formContainer = document.createElement('form');
+    formContainer.id = 'to-do-form';
+    toDoDisplay.insertBefore(formContainer, this.parentElement);
+    formContainer.addEventListener('submit', makeToDo);
+
+    populateToDoForm(formContainer);
+    document.getElementById('to-do-title-input').value = toDoName;
+    document.getElementById('to-do-description-input').value = toDoDescription;
+    var formattedDate = format(toDoDate, 'yyyy-MM-dd');
+    document.getElementById('to-do-date-input').value = formattedDate;
+    document.getElementById('to-do-project-input').value = toDoProject;
+
+    var toDoRow = this.parentElement;
+    toDoRow.innerHTML = '';
+    toDoRow.remove();
 }
 
-const deleteToDo = () => {
-    return;
+function deleteToDo() {
+    var projectName = this.parentElement.parentElement.parentElement.children[0].children[0].textContent;
+    var toDoName = this.parentElement.children[1].textContent;
+
+    for (let i = 0; i<window.projectArray.length; i++) {
+        if (window.projectArray[i].title == projectName) {
+            window.projectArray[i].removeToDo(toDoName);
+        }
+    }
+
+    var toDoRow = this.parentElement
+    toDoRow.innerHTML='';
+    toDoRow.remove();
 }
 
 //make to-do creation form
@@ -121,6 +166,10 @@ const createToDoForm = () => {
     const formContainer = displayAdder.createForm(parentDiv, '', 'to-do-form');
     formContainer.addEventListener('submit', makeToDo);
 
+    populateToDoForm(formContainer);
+}
+
+const populateToDoForm = (formContainer) => {
     const titleInput = displayAdder.createInput(formContainer, 'text', 'title', '', 'to-do-title-input', 'to-do-form-input');
     titleInput.placeholder = 'Title: Mow Lawn'
 
