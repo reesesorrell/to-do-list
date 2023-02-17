@@ -42,6 +42,7 @@ const makeProject = (e) => {
     window.projectArray.push(newProject);
     addProjectToDisplay(newProject);
     deleteProjectForm();
+    browseToProject.apply(newProject);
 }
 
 //take the project object and create a display using its title
