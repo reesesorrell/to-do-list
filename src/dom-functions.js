@@ -97,7 +97,7 @@ const displayToDos = (project) => {
     let toDos = project.toDoList;
     for(let i = 0; i < toDos.length; i++) {
         const toDo = toDos[i];
-        const toDoContainer = displayAdder.createDiv(toDoDisplay, '', '', 'to-do-container,to-do-row');
+        const toDoContainer = displayAdder.createDiv(toDoDisplay, '', toDo.title + '-row', 'to-do-container,to-do-row');
         displayAdder.createInput(toDoContainer, 'checkbox', 'completed');
         displayAdder.createDiv(toDoContainer, toDo.title);
         displayAdder.createDiv(toDoContainer, format(toDo.date, 'MM/dd/yyyy'));
@@ -107,7 +107,14 @@ const displayToDos = (project) => {
 }
 
 function editToDo() {
-    var projectName = this.parentElement.parentElement.parentElement.children[0].children[0].textContent;
+    try {
+        const submitButton = document.getElementById('to-do-submit-button');
+        submitButton.click();
+    }
+    catch {
+    }
+    const mainSpace = document.getElementById('main-space');
+    var projectName = mainSpace.children[0].children[0].textContent;
     var toDoName = this.parentElement.children[1].textContent;
 
     for (let i = 0; i<window.projectArray.length; i++) {
@@ -126,10 +133,12 @@ function editToDo() {
         }
     }
 
+    var toDoRow = document.getElementById(toDoName + '-row');
+
     const toDoDisplay = document.getElementById('to-do-display');
     const formContainer = document.createElement('form');
     formContainer.id = 'to-do-form';
-    toDoDisplay.insertBefore(formContainer, this.parentElement);
+    toDoDisplay.insertBefore(formContainer, toDoRow);    
     formContainer.addEventListener('submit', makeToDo);
 
     populateToDoForm(formContainer);
@@ -139,10 +148,10 @@ function editToDo() {
     document.getElementById('to-do-date-input').value = formattedDate;
     document.getElementById('to-do-project-input').value = toDoProject;
 
-    var toDoRow = this.parentElement;
     toDoRow.innerHTML = '';
     toDoRow.remove();
 }
+
 
 function deleteToDo() {
     var projectName = this.parentElement.parentElement.parentElement.children[0].children[0].textContent;
@@ -161,6 +170,12 @@ function deleteToDo() {
 
 //make to-do creation form
 const createToDoForm = () => {
+    try {
+        const submitButton = document.getElementById('to-do-submit-button');
+        submitButton.click();
+    }
+    catch {
+    }
     document.getElementById('add-task-button').remove();
     const parentDiv = document.getElementById('to-do-display');
     const formContainer = displayAdder.createForm(parentDiv, '', 'to-do-form');
@@ -197,7 +212,7 @@ const makeToDo = (e) => {
     var description = document.getElementById('to-do-description-input').value;
     var date = document.getElementById('to-do-date-input').value;
     var year = parseInt(date.slice(0,4));
-    var month = parseInt(date.slice(5, 7));
+    var month = parseInt(date.slice(5, 7))-1;
     var day = parseInt(date.slice(8,10));
     var dateObject = new Date(year, month, day);
     var projectName = document.getElementById('to-do-project-input').value;
