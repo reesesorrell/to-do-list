@@ -1,12 +1,16 @@
 import displayAdder from "./helper";
 import checkPic from "./img/check.png";
-import { makeProjectForm } from "./dom-functions";
-import { Project } from "./object-functions";
-
-const defaultProject = Project('General');
-window.projectArray = [defaultProject];
+import { makeProjectForm, addProjectToDisplay, browseToProject } from "./dom-functions";
+import { getLocalStorage, Project } from "./object-functions";
 
 const populateHomePage = () => {
+    try {
+        getLocalStorage();
+    }
+    catch {
+        const defaultProject = Project('General');
+        window.projectArray = [defaultProject]; 
+    }
     const parent = document.getElementById('content');
     
     const header = displayAdder.createDiv(parent, '', 'header');
@@ -25,6 +29,15 @@ const populateHomePage = () => {
     for (let i = 0; i<tabNames.length; i++) {
         let thisTab = tabNames[i];
         displayAdder.createDiv(sideBar, thisTab, thisTab.toLowerCase() + '-tab', 'side-bar-text,title-text');
+    }
+
+    for (let i = 0; i<window.projectArray.length; i++) {
+        let thisProject = window.projectArray[i];
+        addProjectToDisplay(thisProject);
+    }
+
+    if (window.projectArray[0]){
+        browseToProject.apply(window.projectArray[0]);
     }
     
     displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');

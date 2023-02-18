@@ -1,4 +1,4 @@
-import {Todo, Project} from "./object-functions";
+import {Todo, Project, updateLocalStorage} from "./object-functions";
 import { compareAsc, format } from 'date-fns';
 import displayAdder from "./helper";
 
@@ -40,6 +40,7 @@ const makeProject = (e) => {
     const inputField = document.getElementById('project-form');
     const newProject = Project(inputField.value);
     window.projectArray.push(newProject);
+    updateLocalStorage();
     addProjectToDisplay(newProject);
     deleteProjectForm();
     browseToProject.apply(newProject);
@@ -72,6 +73,7 @@ function deleteProject() {
     for (let i = 0; i<window.projectArray.length; i++) {
         if (window.projectArray[i].title == projectTitle) {
             window.projectArray.splice(i, 1);
+            updateLocalStorage();
         }
     }
     projectButton.remove();
@@ -129,6 +131,7 @@ function editToDo() {
                     var toDoDate = currentToDo.date;
                     var toDoProject = currentToDo.project;
                     currentProject.toDoList.splice(j, 1);
+                    updateLocalStorage();
                 }
             }
         }
@@ -161,6 +164,7 @@ function deleteToDo() {
     for (let i = 0; i<window.projectArray.length; i++) {
         if (window.projectArray[i].title == projectName) {
             window.projectArray[i].removeToDo(toDoName);
+            updateLocalStorage();
         }
     }
 
@@ -235,6 +239,7 @@ const addToProject = (toDo, projectName) => {
     for (let i = 0; i < window.projectArray.length; i++) {
         if (window.projectArray[i].title == projectName) {
             window.projectArray[i].addToDo(toDo);
+            updateLocalStorage();
             browseToProject.apply(window.projectArray[i]);
             projectExists = true;
         }
@@ -245,6 +250,7 @@ const addToProject = (toDo, projectName) => {
         const newProject = Project(projectName);
         window.projectArray.push(newProject);
         newProject.addToDo(toDo);
+        updateLocalStorage();
         addProjectToDisplay(newProject);
         browseToProject.apply(newProject);
 
@@ -268,4 +274,4 @@ const reverseSort = () => {
     return;
 }
 
-export {makeProjectForm, browseToProject};
+export {makeProjectForm, browseToProject, addProjectToDisplay};
