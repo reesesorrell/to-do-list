@@ -77,6 +77,7 @@ function deleteProject() {
         }
     }
     projectButton.remove();
+    document.getElementById('home-tab').click();
 }
 
 //display all to-do objects in the project object
@@ -125,26 +126,31 @@ function changeToDoComplete() {
 }
 
 function editToDo() {
-    try {
-        if (document.getElementById('to-do-title-input').value && document.getElementById('to-do-date-input').value) {
-            const submitButton = document.getElementById('to-do-submit-button');
-            submitButton.click();
-        }
-        else {
-            console.log('working');
-            const deleteButton = document.getElementById('to-do-form-delete-button');
-            console.log(deleteButton);
-            deleteButton.click();
-        }
-    }
-    catch {
-    }
+    closeOpenToDoForm();
     const mainSpace = document.getElementById('main-space');
     var projectName = mainSpace.children[0].children[0].textContent;
     var toDoName = this.parentElement.children[1].textContent;
 
-    for (let i = 0; i<window.projectArray.length; i++) {
-        if (window.projectArray[i].title == projectName) {
+    if(projectName != 'Home' && projectName != 'Today' && projectName != 'This Week') {
+        for (let i = 0; i<window.projectArray.length; i++) {
+            if (window.projectArray[i].title == projectName) {
+                var currentProject = window.projectArray[i];
+                var toDoList = currentProject.toDoList;
+                for (let j = 0; j < toDoList.length; j++) {
+                    if (toDoList[j].title == toDoName) {
+                        var currentToDo = toDoList[j];
+                        var toDoDescription = currentToDo.description;
+                        var toDoDate = currentToDo.date;
+                        var toDoProject = currentToDo.project;
+                        currentProject.toDoList.splice(j, 1);
+                        updateLocalStorage();
+                    }
+                }
+            }
+        }
+    }
+    else {
+        for (let i = 0; i<window.projectArray.length; i++) {
             var currentProject = window.projectArray[i];
             var toDoList = currentProject.toDoList;
             for (let j = 0; j < toDoList.length; j++) {
@@ -198,12 +204,7 @@ function deleteToDo() {
 
 //make to-do creation form
 const createToDoForm = () => {
-    try {
-        const submitButton = document.getElementById('to-do-submit-button');
-        submitButton.click();
-    }
-    catch {
-    }
+    closeOpenToDoForm();
     document.getElementById('add-task-button').remove();
     const parentDiv = document.getElementById('to-do-display');
     const formContainer = displayAdder.createForm(parentDiv, '', 'to-do-form');
@@ -230,8 +231,11 @@ const populateToDoForm = (formContainer) => {
     dateInput.required = true;
     const projectInput = displayAdder.createInput(formContainer, 'text', 'project', '', 'to-do-project-input', 'to-do-form-input');
     projectInput.placeholder = 'Project';
-    const submitButton = displayAdder.createInput(formContainer, 'submit', 'submit', 'Submit', 'to-do-submit-button', 'project-button');
-    const deleteButton = displayAdder.createButton(formContainer, deleteToDoForm, 'Cancel', 'to-do-form-delete-button', 'project-button');
+    if (document.getElementById('project-title').textContent == 'Home') {
+        projectInput.required = true;
+    }
+    displayAdder.createInput(formContainer, 'submit', 'submit', 'Submit', 'to-do-submit-button', 'project-button');
+    displayAdder.createButton(formContainer, deleteToDoForm, 'Cancel', 'to-do-form-delete-button', 'project-button');
 }
 
 //handle to-do form submit
@@ -246,7 +250,13 @@ const makeToDo = (e, toDoComplete = false) => {
     var day = parseInt(date.slice(8,10));
     var dateObject = new Date(year, month, day);
     var projectName = document.getElementById('to-do-project-input').value;
-    const toDo = Todo(name, description, dateObject, projectName, toDoComplete);
+    const defaultProject = document.getElementById('project-title').textContent;
+    if(projectName){
+        var toDo = Todo(name, description, dateObject, projectName, toDoComplete);
+    }
+    else {
+        var toDo = Todo(name, description, dateObject, defaultProject, toDoComplete);
+    }
 
     deleteToDoForm();
 
@@ -254,7 +264,6 @@ const makeToDo = (e, toDoComplete = false) => {
         addToProject(toDo, projectName);
     }
     else {
-        const defaultProject = document.getElementById('project-title').textContent;
         addToProject(toDo, defaultProject);
     }
 }
@@ -296,13 +305,38 @@ const deleteToDoForm = () => {
     }
 }
 
+const closeOpenToDoForm = () => {
+    try {
+        if (document.getElementById('to-do-title-input').value && document.getElementById('to-do-date-input').value) {
+            const submitButton = document.getElementById('to-do-submit-button');
+            submitButton.click();
+        }
+        else {
+            const deleteButton = document.getElementById('to-do-form-delete-button');
+            deleteButton.click();
+        }
+    }
+    catch {
+    }
+}
+
 //reverse order of to-do list
 const reverseSort = () => {
     return;
 }
 
 const browseHome = () => {
+    closeOpenToDoForm();
+    const homeProject = Project('Home');
+    var projectArray = window.projectArray;
+    for (var i = 0; i<projectArray.length; i++) {
+        var currentToDoList = projectArray[i].toDoList;
+        for (var j = 0; j<currentToDoList.length; j++) {
+            homeProject.addToDo(currentToDoList[j]);
+        }
 
+    }
+    browseToProject.apply(homeProject);
 }
 
 const browseToday = () => {
@@ -310,7 +344,7 @@ const browseToday = () => {
 }
 
 const browseWeek = () => {
-    
+
 }
 
 export {makeProjectForm, browseToProject, addProjectToDisplay, browseHome, browseToday, browseWeek};
