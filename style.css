@@ -25,6 +25,10 @@ textarea {
     resize: none;
   }
 
+input[type=checkbox]:hover {
+    cursor: pointer;
+}
+
 #content {
     width: 100vw;
     height: 100vh;
@@ -178,10 +182,6 @@ textarea {
     align-items: center;
 }
 
-.to-do-row:hover {
-    cursor: pointer;
-}
-
 #to-do-form {
     align-self: flex-start;
     display: grid;
@@ -217,7 +217,9 @@ textarea {
 }
 
 .to-do-container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 5fr 4fr 2fr 2fr;
+    justify-items: center;
+    align-items: center;
     padding: 0px 40px;
 }
