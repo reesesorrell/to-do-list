@@ -26,11 +26,22 @@ const updateLocalStorage = () => {
         return this.setItem(key, JSON.stringify(obj))
     }
 
+    try{
+        var openProjectName = document.getElementById('project-title').textContent;
+    }
+    catch{
+        var openProjectName = undefined;
+    }
+
     var projectNum = window.projectArray.length;
     for (let i = 0; i < projectNum; i++) {
         localStorage.setObj('project' + i, window.projectArray[i]);
+        if (window.projectArray[i].title == openProjectName) {
+            localStorage.setItem('openTabNumber', i);
+            console.log(i);
+        }
     }
-    localStorage.setItem('projectNum', projectNum);
+    localStorage.setItem('projectNum', projectNum); 
 }
 
 const getLocalStorage = () => {
@@ -63,6 +74,13 @@ const getLocalStorage = () => {
         projectArray.push(realProject);
     }
     window.projectArray = projectArray;
+
+    try {
+        return localStorage.getItem('openTabNumber');
+    }
+    catch {
+        return 0;
+    }
 }
 
 export {Todo, Project, updateLocalStorage, getLocalStorage};

@@ -93,6 +93,7 @@ function browseToProject() {
 
     const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
     addTaskButton.onclick = createToDoForm;
+    updateLocalStorage();
 }
 
 const displayToDos = (project) => {
@@ -192,6 +193,7 @@ const createToDoForm = () => {
 const populateToDoForm = (formContainer) => {
     const titleInput = displayAdder.createInput(formContainer, 'text', 'title', '', 'to-do-title-input', 'to-do-form-input');
     titleInput.placeholder = 'Title: Mow Lawn'
+    titleInput.required = true;
 
     const descriptionInput = document.createElement('textarea');
     descriptionInput.name = 'description';
@@ -203,6 +205,7 @@ const populateToDoForm = (formContainer) => {
     formContainer.appendChild(descriptionInput);
 
     const dateInput = displayAdder.createInput(formContainer, 'date', 'date', '', 'to-do-date-input', 'to-do-form-input');
+    dateInput.required = true;
     const projectInput = displayAdder.createInput(formContainer, 'text', 'project', '', 'to-do-project-input', 'to-do-form-input');
     projectInput.placeholder = 'Project';
     const submitButton = displayAdder.createInput(formContainer, 'submit', 'submit', 'Submit', 'to-do-submit-button', 'project-button');

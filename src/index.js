@@ -4,13 +4,16 @@ import { makeProjectForm, addProjectToDisplay, browseToProject } from "./dom-fun
 import { getLocalStorage, Project } from "./object-functions";
 
 const populateHomePage = () => {
+
     try {
-        getLocalStorage();
+        var openTabNumber = getLocalStorage();
+        console.log(openTabNumber);
     }
     catch {
         const defaultProject = Project('General');
         window.projectArray = [defaultProject]; 
     }
+
     const parent = document.getElementById('content');
     
     const header = displayAdder.createDiv(parent, '', 'header');
@@ -37,7 +40,7 @@ const populateHomePage = () => {
     }
 
     if (window.projectArray[0]){
-        browseToProject.apply(window.projectArray[0]);
+        browseToProject.apply(window.projectArray[openTabNumber]);
     }
     
     displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
