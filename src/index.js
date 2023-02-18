@@ -7,7 +7,6 @@ const populateHomePage = () => {
 
     try {
         var openTabNumber = getLocalStorage();
-        console.log(openTabNumber);
     }
     catch {
         const defaultProject = Project('General');

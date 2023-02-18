@@ -38,7 +38,6 @@ const updateLocalStorage = () => {
         localStorage.setObj('project' + i, window.projectArray[i]);
         if (window.projectArray[i].title == openProjectName) {
             localStorage.setItem('openTabNumber', i);
-            console.log(i);
         }
     }
     localStorage.setItem('projectNum', projectNum); 

@@ -112,8 +112,16 @@ const displayToDos = (project) => {
 
 function editToDo() {
     try {
-        const submitButton = document.getElementById('to-do-submit-button');
-        submitButton.click();
+        if (document.getElementById('to-do-title-input').value && document.getElementById('to-do-date-input').value) {
+            const submitButton = document.getElementById('to-do-submit-button');
+            submitButton.click();
+        }
+        else {
+            console.log('working');
+            const deleteButton = document.getElementById('to-do-form-delete-button');
+            console.log(deleteButton);
+            deleteButton.click();
+        }
     }
     catch {
     }
@@ -267,9 +275,11 @@ const deleteToDoForm = () => {
     formContainer.innerHTML = '';
     formContainer.remove();
 
-    const toDoDisplay = document.getElementById('to-do-display');
-    const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
-    addTaskButton.onclick = createToDoForm;
+    if(!document.getElementById('add-task-button')){
+        const toDoDisplay = document.getElementById('to-do-display');
+        const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
+        addTaskButton.onclick = createToDoForm;
+    }
 }
 
 //reverse order of to-do list
