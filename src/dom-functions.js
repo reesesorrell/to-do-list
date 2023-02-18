@@ -1,5 +1,5 @@
 import {Todo, Project, updateLocalStorage} from "./object-functions";
-import { compareAsc, format } from 'date-fns';
+import { format } from 'date-fns';
 import displayAdder from "./helper";
 
 //create text input for a new porject when the add project button is clicked
@@ -102,12 +102,26 @@ const displayToDos = (project) => {
     for(let i = 0; i < toDos.length; i++) {
         const toDo = toDos[i];
         const toDoContainer = displayAdder.createDiv(toDoDisplay, '', toDo.title + '-row', 'to-do-container,to-do-row');
-        displayAdder.createInput(toDoContainer, 'checkbox', 'completed');
+        const toDoCheckbox = displayAdder.createInput(toDoContainer, 'checkbox', 'completed');
+        if (toDo.completed) {
+            toDoCheckbox.checked = true;
+        }
+        toDoCheckbox.addEventListener('change', changeToDoComplete.bind(toDo));
         displayAdder.createDiv(toDoContainer, toDo.title);
         displayAdder.createDiv(toDoContainer, format(toDo.date, 'MM/dd/yyyy'));
         displayAdder.createButton(toDoContainer, editToDo, 'Edit', 'edit-to-do-button');
         displayAdder.createButton(toDoContainer, deleteToDo, 'Delete', 'delete-to-do-button');
     }
+}
+
+function changeToDoComplete() {
+    if(this.completed) {
+        this.completed = false;
+    }
+    else {
+        this.completed = true;
+    }
+    updateLocalStorage();
 }
 
 function editToDo() {
@@ -221,7 +235,7 @@ const populateToDoForm = (formContainer) => {
 }
 
 //handle to-do form submit
-const makeToDo = (e) => {
+const makeToDo = (e, toDoComplete = false) => {
     e.preventDefault();
 
     var name = document.getElementById('to-do-title-input').value;
@@ -232,7 +246,7 @@ const makeToDo = (e) => {
     var day = parseInt(date.slice(8,10));
     var dateObject = new Date(year, month, day);
     var projectName = document.getElementById('to-do-project-input').value;
-    const toDo = Todo(name, description, dateObject, projectName);
+    const toDo = Todo(name, description, dateObject, projectName, toDoComplete);
 
     deleteToDoForm();
 
@@ -287,4 +301,16 @@ const reverseSort = () => {
     return;
 }
 
-export {makeProjectForm, browseToProject, addProjectToDisplay};
+const browseHome = () => {
+
+}
+
+const browseToday = () => {
+
+}
+
+const browseWeek = () => {
+    
+}
+
+export {makeProjectForm, browseToProject, addProjectToDisplay, browseHome, browseToday, browseWeek};

@@ -1,6 +1,6 @@
 import displayAdder from "./helper";
 import checkPic from "./img/check.png";
-import { makeProjectForm, addProjectToDisplay, browseToProject } from "./dom-functions";
+import { makeProjectForm, addProjectToDisplay, browseToProject, browseHome, browseToday, browseWeek } from "./dom-functions";
 import { getLocalStorage, Project } from "./object-functions";
 
 const populateHomePage = () => {
@@ -32,6 +32,15 @@ const populateHomePage = () => {
         let thisTab = tabNames[i];
         displayAdder.createDiv(sideBar, thisTab, thisTab.toLowerCase() + '-tab', 'side-bar-text,title-text');
     }
+
+    const homeTab = document.getElementById('home-tab');
+    homeTab.onclick = browseHome;
+
+    const todayTab = document.getElementById('today-tab');
+    todayTab.onclick = browseToday;
+
+    const weekTab = document.getElementById('week-tab');
+    weekTab.onclick = browseWeek;
 
     for (let i = 0; i<window.projectArray.length; i++) {
         let thisProject = window.projectArray[i];

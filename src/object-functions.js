@@ -1,4 +1,4 @@
-import { format } from "date-fns"
+import { compareAsc } from "date-fns"
 
 const Todo = (title, description, date, project, completed=false) => {
     return {title, date, description, project, completed}
