@@ -69,7 +69,7 @@ function makeDeleteProjectButton() {
 }
 
 //remove project tab and take the project object off of the window array
-function deleteProject() {
+function deleteProject(e) {
     var projectButton = this.parentElement
     var projectTitle = projectButton.textContent.slice(0,-1);
     //search for the project by its name and remove it
@@ -81,6 +81,8 @@ function deleteProject() {
     }
     projectButton.remove();
     browseHome();
+    //stops parent button from naviagating back to the project
+    e.stopPropagation();
 }
 
 //display all to-do objects in the project object
@@ -343,7 +345,6 @@ const deleteToDoForm = () => {
 const closeOpenToDoForm = () => {
     try {
         if (document.getElementById('to-do-title-input').value && document.getElementById('to-do-date-input').value) {
-            //FIXME: if on home, week, or today tab, check for project value too
             const submitButton = document.getElementById('to-do-submit-button');
             submitButton.click();
         }
