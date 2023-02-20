@@ -1,9 +1,11 @@
 import { compareAsc } from "date-fns"
 
+//make basic todo object that holds objects
 const Todo = (title, description, date, project, completed=false) => {
     return {title, date, description, project, completed}
 }
 
+//make project object which holds a todolist and allows adding and removing the objects
 const Project = (title) => {
     var toDoList = []
     const addToDo = (toDo) => {
@@ -17,9 +19,13 @@ const Project = (title) => {
             }
         }
     }
+    const _sortToDo = (toDoArray) => {
+        //FIXME: sort todo list by date
+    }
     return {title, toDoList, addToDo, removeToDo};
 }
 
+//copy the window project array into the local storage
 const updateLocalStorage = () => {
 
     Storage.prototype.setObj = function(key, obj) {
@@ -34,15 +40,18 @@ const updateLocalStorage = () => {
     }
 
     var projectNum = window.projectArray.length;
+    localStorage.setItem('projectNum', projectNum); 
+
+    //save the projects by number into local storage
     for (let i = 0; i < projectNum; i++) {
         localStorage.setObj('project' + i, window.projectArray[i]);
         if (window.projectArray[i].title == openProjectName) {
             localStorage.setItem('openTabNumber', i);
         }
     }
-    localStorage.setItem('projectNum', projectNum); 
 }
 
+//loop through the storage project array and create real window todos and projects with it
 const getLocalStorage = () => {
 
     Storage.prototype.getObj = function(key) {
@@ -50,6 +59,7 @@ const getLocalStorage = () => {
     }
 
     var projectArray = []
+
 
     var projectNum = localStorage.getItem('projectNum');
     for (let i = 0; i < projectNum; i++) {

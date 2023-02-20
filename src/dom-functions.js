@@ -39,10 +39,13 @@ const makeProject = (e) => {
     e.preventDefault();
     const inputField = document.getElementById('project-form');
     const newProject = Project(inputField.value);
+    // add project to window array and then update local storage
     window.projectArray.push(newProject);
     updateLocalStorage();
+    //upadte sidebar
     addProjectToDisplay(newProject);
     deleteProjectForm();
+    //auto open a new project when created
     browseToProject.apply(newProject);
 }
 
@@ -88,26 +91,31 @@ function browseToProject() {
     const titleRow = displayAdder.createDiv(mainSpace, '', 'title-row');
     displayAdder.createDiv(titleRow, this.title, 'project-title', 'title-text');
     displayAdder.createButton(titleRow, reverseSort, 'Due Date Order', 'reverse-button');
+
     const toDoDisplay = displayAdder.createDiv(mainSpace, '', 'to-do-display');
 
     displayToDos(this);
 
     const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
     addTaskButton.onclick = createToDoForm;
+    //update so that it grabs the tabbed project
     updateLocalStorage();
 }
 
 const displayToDos = (project) => {
     const toDoDisplay = document.getElementById('to-do-display');
     let toDos = project.toDoList;
+    //for each to do in the project, create a row and add all info and buttons
     for(let i = 0; i < toDos.length; i++) {
         const toDo = toDos[i];
         const toDoContainer = displayAdder.createDiv(toDoDisplay, '', toDo.title + '-row', 'to-do-container,to-do-row');
         const toDoCheckbox = displayAdder.createInput(toDoContainer, 'checkbox', 'completed');
+        //checks the todo if its completed, and adds a listener for it changing
         if (toDo.completed) {
             toDoCheckbox.checked = true;
         }
         toDoCheckbox.addEventListener('change', changeToDoComplete.bind(toDo));
+
         displayAdder.createDiv(toDoContainer, toDo.title);
         displayAdder.createDiv(toDoContainer, format(toDo.date, 'MM/dd/yyyy'));
         displayAdder.createButton(toDoContainer, editToDo, 'Edit', 'edit-to-do-button');
@@ -115,6 +123,7 @@ const displayToDos = (project) => {
     }
 }
 
+//changes the complete status of a todo when its checked
 function changeToDoComplete() {
     if(this.completed) {
         this.completed = false;
@@ -127,46 +136,42 @@ function changeToDoComplete() {
 
 function editToDo() {
     closeOpenToDoForm();
-    const mainSpace = document.getElementById('main-space');
-    var projectName = mainSpace.children[0].children[0].textContent;
     var toDoName = this.parentElement.children[1].textContent;
 
-    if(projectName != 'Home' && projectName != 'Today' && projectName != 'This Week') {
-        for (let i = 0; i<window.projectArray.length; i++) {
-            if (window.projectArray[i].title == projectName) {
-                var currentProject = window.projectArray[i];
-                var toDoList = currentProject.toDoList;
-                for (let j = 0; j < toDoList.length; j++) {
-                    if (toDoList[j].title == toDoName) {
-                        var currentToDo = toDoList[j];
-                        var toDoDescription = currentToDo.description;
-                        var toDoDate = currentToDo.date;
-                        var toDoProject = currentToDo.project;
-                        currentProject.toDoList.splice(j, 1);
-                        updateLocalStorage();
-                    }
-                }
-            }
-        }
-    }
-    else {
-        for (let i = 0; i<window.projectArray.length; i++) {
-            var currentProject = window.projectArray[i];
-            var toDoList = currentProject.toDoList;
-            for (let j = 0; j < toDoList.length; j++) {
-                if (toDoList[j].title == toDoName) {
-                    var currentToDo = toDoList[j];
-                    var toDoDescription = currentToDo.description;
-                    var toDoDate = currentToDo.date;
-                    var toDoProject = currentToDo.project;
-                    currentProject.toDoList.splice(j, 1);
-                    updateLocalStorage();
-                }
+    //find the todo with the right name, get its info, then remove it from the project (assumes unique names)
+    for (let i = 0; i<window.projectArray.length; i++) {
+        var currentProject = window.projectArray[i];
+        var toDoList = currentProject.toDoList;
+        for (let j = 0; j < toDoList.length; j++) {
+            if (toDoList[j].title == toDoName) {
+                var currentToDo = toDoList[j];
+                var toDoDescription = currentToDo.description;
+                var toDoDate = currentToDo.date;
+                var toDoProject = currentToDo.project;
+                currentProject.toDoList.splice(j, 1);
+                updateLocalStorage();
             }
         }
     }
 
     var toDoRow = document.getElementById(toDoName + '-row');
+
+    createToDoEditForm(toDoRow);
+    
+    //fill in the todo submission with the old todo info
+    document.getElementById('to-do-title-input').value = toDoName;
+    document.getElementById('to-do-description-input').value = toDoDescription;
+    var formattedDate = format(toDoDate, 'yyyy-MM-dd');
+    document.getElementById('to-do-date-input').value = formattedDate;
+    document.getElementById('to-do-project-input').value = toDoProject;
+
+    //delete old todo display
+    toDoRow.innerHTML = '';
+    toDoRow.remove();
+}
+
+//creates a todo form above the row of the todo which is being editted
+const createToDoEditForm = (toDoRow) => {
 
     const toDoDisplay = document.getElementById('to-do-display');
     const formContainer = document.createElement('form');
@@ -175,28 +180,26 @@ function editToDo() {
     formContainer.addEventListener('submit', makeToDo);
 
     populateToDoForm(formContainer);
-    document.getElementById('to-do-title-input').value = toDoName;
-    document.getElementById('to-do-description-input').value = toDoDescription;
-    var formattedDate = format(toDoDate, 'yyyy-MM-dd');
-    document.getElementById('to-do-date-input').value = formattedDate;
-    document.getElementById('to-do-project-input').value = toDoProject;
-
-    toDoRow.innerHTML = '';
-    toDoRow.remove();
 }
 
 
+
 function deleteToDo() {
-    var projectName = this.parentElement.parentElement.parentElement.children[0].children[0].textContent;
     var toDoName = this.parentElement.children[1].textContent;
 
+    //search for todo by name and remove it from its project, then update storage
     for (let i = 0; i<window.projectArray.length; i++) {
-        if (window.projectArray[i].title == projectName) {
-            window.projectArray[i].removeToDo(toDoName);
-            updateLocalStorage();
+        var currentProject = window.projectArray[i];
+        var toDoList = currentProject.toDoList;
+        for (let j = 0; j < toDoList.length; j++) {
+            if (toDoList[j].title == toDoName) {
+                window.projectArray[i].removeToDo(toDoName);
+                updateLocalStorage();
+            }
         }
     }
 
+    //remove todo from display
     var toDoRow = this.parentElement
     toDoRow.innerHTML='';
     toDoRow.remove();
@@ -213,11 +216,14 @@ const createToDoForm = () => {
     populateToDoForm(formContainer);
 }
 
+//Add all elements to the to do form and set their requirments
 const populateToDoForm = (formContainer) => {
+    //title input section
     const titleInput = displayAdder.createInput(formContainer, 'text', 'title', '', 'to-do-title-input', 'to-do-form-input');
     titleInput.placeholder = 'Title: Mow Lawn'
     titleInput.required = true;
 
+    //description input section
     const descriptionInput = document.createElement('textarea');
     descriptionInput.name = 'description';
     descriptionInput.id = 'to-do-description-input';
@@ -227,21 +233,29 @@ const populateToDoForm = (formContainer) => {
     descriptionInput.placeholder = 'Details: eg. mow in straight lines'
     formContainer.appendChild(descriptionInput);
 
+    //date input section
     const dateInput = displayAdder.createInput(formContainer, 'date', 'date', '', 'to-do-date-input', 'to-do-form-input');
     dateInput.required = true;
+
+    //project input section
     const projectInput = displayAdder.createInput(formContainer, 'text', 'project', '', 'to-do-project-input', 'to-do-form-input');
     projectInput.placeholder = 'Project';
-    if (document.getElementById('project-title').textContent == 'Home') {
+    const pageName = document.getElementById('project-title').textContent;
+        //requires a project if not inside a project tab already
+    if (pageName == 'Home' || pageName == 'Today' || pageName == 'Week') {
         projectInput.required = true;
     }
+
+    //submit and delete button section
     displayAdder.createInput(formContainer, 'submit', 'submit', 'Submit', 'to-do-submit-button', 'project-button');
     displayAdder.createButton(formContainer, deleteToDoForm, 'Cancel', 'to-do-form-delete-button', 'project-button');
 }
 
 //handle to-do form submit
-const makeToDo = (e, toDoComplete = false) => {
+const makeToDo = (e) => {
     e.preventDefault();
 
+    //get the todo info from the submitted form input
     var name = document.getElementById('to-do-title-input').value;
     var description = document.getElementById('to-do-description-input').value;
     var date = document.getElementById('to-do-date-input').value;
@@ -250,12 +264,14 @@ const makeToDo = (e, toDoComplete = false) => {
     var day = parseInt(date.slice(8,10));
     var dateObject = new Date(year, month, day);
     var projectName = document.getElementById('to-do-project-input').value;
+
+    //get page title as project name, if none is provided
     const defaultProject = document.getElementById('project-title').textContent;
     if(projectName){
-        var toDo = Todo(name, description, dateObject, projectName, toDoComplete);
+        var toDo = Todo(name, description, dateObject, projectName);
     }
     else {
-        var toDo = Todo(name, description, dateObject, defaultProject, toDoComplete);
+        var toDo = Todo(name, description, dateObject, defaultProject);
     }
 
     deleteToDoForm();
@@ -268,16 +284,21 @@ const makeToDo = (e, toDoComplete = false) => {
     }
 }
 
+//adds a to do to an existing project, if a project with that name doesnt exist it creates it
 const addToProject = (toDo, projectName) => {
     let projectExists = false;
+
+    //search for the project, when found, add the to do and then browse to that project tab
     for (let i = 0; i < window.projectArray.length; i++) {
         if (window.projectArray[i].title == projectName) {
             window.projectArray[i].addToDo(toDo);
             updateLocalStorage();
-            browseToProject.apply(window.projectArray[i]);
+            browseToNewProject(window.projectArray[i]);
             projectExists = true;
         }
     }
+
+    //creates new project, adds todo, adds it to display, then browses to that tab
     if (projectExists != true) {
         document.getElementById('new-project-button').remove();
 
@@ -286,9 +307,20 @@ const addToProject = (toDo, projectName) => {
         newProject.addToDo(toDo);
         updateLocalStorage();
         addProjectToDisplay(newProject);
-        browseToProject.apply(newProject);
+        browseToNewProject(newProject);
 
         makeProjectAddButton();
+    }
+}
+
+//browses to the new projects tab unless its was created in the home tab, then it browses home
+const browseToNewProject = (newProject) => {
+    const currentProjectTab = document.getElementById('project-title').textContent;
+    if (currentProjectTab == 'Home') {
+        browseHome();
+    }
+    else {
+        browseToProject.apply(newProject);
     }
 }
 
@@ -298,6 +330,7 @@ const deleteToDoForm = () => {
     formContainer.innerHTML = '';
     formContainer.remove();
 
+    //adds add task button if one doesn't exist
     if(!document.getElementById('add-task-button')){
         const toDoDisplay = document.getElementById('to-do-display');
         const addTaskButton = displayAdder.createDiv(toDoDisplay, '+ Add Task', 'add-task-button', 'to-do-row');
@@ -305,9 +338,12 @@ const deleteToDoForm = () => {
     }
 }
 
+//closes an open edit tab, called when two edit tabs are trying to be open at the same time
+//if the title and date are filled out, its submitted, otherwise its deleted
 const closeOpenToDoForm = () => {
     try {
         if (document.getElementById('to-do-title-input').value && document.getElementById('to-do-date-input').value) {
+            //FIXME: if on home, week, or today tab, check for project value too
             const submitButton = document.getElementById('to-do-submit-button');
             submitButton.click();
         }
@@ -320,11 +356,12 @@ const closeOpenToDoForm = () => {
     }
 }
 
-//reverse order of to-do list
+//reverse the order of all project to do arrays and then redisplay
 const reverseSort = () => {
-    return;
+    //FIXME
 }
 
+//create a temporary home project with all todos and then display it
 const browseHome = () => {
     closeOpenToDoForm();
     const homeProject = Project('Home');
@@ -336,15 +373,18 @@ const browseHome = () => {
         }
 
     }
+    //FIXME: sort the projects in the home
     browseToProject.apply(homeProject);
 }
 
+//create a temporary today project with todos for today, then display it
 const browseToday = () => {
-
+    //FIXME
 }
 
+//create a temporary week project with todos for this week, then display it
 const browseWeek = () => {
-
+    //FIXME
 }
 
 export {makeProjectForm, browseToProject, addProjectToDisplay, browseHome, browseToday, browseWeek};
