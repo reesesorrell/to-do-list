@@ -47,13 +47,7 @@ const populateHomePage = () => {
 
     displayAdder.createButton(sideBar, makeProjectForm, '+ Add Project', 'new-project-button', 'sidebar-button');
 
-    //browses to the saved open tab if there is a project (open tab number is 0 by default)
-    if (window.projectArray[0]){
-        browseToProject.apply(window.projectArray[openTabNumber]);
-    }
-    else {
-        document.getElementById('home-tab').click();
-    }
+    document.getElementById('home-tab').click();
 }
 
 populateHomePage();
