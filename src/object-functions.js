@@ -6,21 +6,44 @@ const Todo = (title, description, date, project, completed=false) => {
 }
 
 //make project object which holds a todolist and allows adding and removing the objects
-const Project = (title) => {
+const Project = (title, reversed = false) => {
     var toDoList = []
     const addToDo = (toDo) => {
         toDoList.push(toDo);
+        _sortToDo(toDoList);
+        if (reversed) {
+            toDoList = _reverseArray(toDoList);
+        }
     }
     const removeToDo = (toDoName) => {
         for (let i = 0; i<toDoList.length; i++) {
             if (toDoList[i].title == toDoName) {
-                console.log('working');
                 toDoList.splice(i, 1);
             }
         }
     }
+    
     const _sortToDo = (toDoArray) => {
-        //FIXME: sort todo list by date
+        for (let i = 0; i < toDoArray.length-1; i++) {
+            const currentToDo = toDoArray[i];
+            const nextToDo = toDoArray[i+1];
+            const result = compareAsc(currentToDo.date, nextToDo.date);
+            //if second element is earlier, swap them then call the sorting again
+            if (result == 1) {
+                toDoArray.splice(i, 1);
+                toDoArray.splice(i+1, 0, currentToDo);
+                _sortToDo(toDoArray);
+            }
+        }
+    }
+    // returns the opposite of the current array
+    const _reverseArray = (toDoArray) => {
+        var reversedArray = []
+        console.log(toDoArray);
+        for (let i = toDoArray.length-1; i>=0; i -= 1) {
+            reversed.push[toDoArray[i]];
+        }
+        return reversedArray;
     }
     return {title, toDoList, addToDo, removeToDo};
 }
@@ -46,6 +69,7 @@ const updateLocalStorage = () => {
     for (let i = 0; i < projectNum; i++) {
         localStorage.setObj('project' + i, window.projectArray[i]);
         if (window.projectArray[i].title == openProjectName) {
+            //FIXME: be able to store home page open as well :)
             localStorage.setItem('openTabNumber', i);
         }
     }
