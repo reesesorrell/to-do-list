@@ -6,14 +6,11 @@ const Todo = (title, description, date, project, completed=false) => {
 }
 
 //make project object which holds a todolist and allows adding and removing the objects
-const Project = (title, reversed = false) => {
+const Project = (title) => {
     var toDoList = []
     const addToDo = (toDo) => {
         toDoList.push(toDo);
         _sortToDo(toDoList);
-        if (reversed) {
-            toDoList = _reverseArray(toDoList);
-        }
     }
     const removeToDo = (toDoName) => {
         for (let i = 0; i<toDoList.length; i++) {
@@ -22,7 +19,7 @@ const Project = (title, reversed = false) => {
             }
         }
     }
-    
+
     const _sortToDo = (toDoArray) => {
         for (let i = 0; i < toDoArray.length-1; i++) {
             const currentToDo = toDoArray[i];
@@ -36,15 +33,7 @@ const Project = (title, reversed = false) => {
             }
         }
     }
-    // returns the opposite of the current array
-    const _reverseArray = (toDoArray) => {
-        var reversedArray = []
-        console.log(toDoArray);
-        for (let i = toDoArray.length-1; i>=0; i -= 1) {
-            reversed.push[toDoArray[i]];
-        }
-        return reversedArray;
-    }
+
     return {title, toDoList, addToDo, removeToDo};
 }
 

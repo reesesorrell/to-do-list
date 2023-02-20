@@ -5,14 +5,13 @@ import { getLocalStorage, Project } from "./object-functions";
 
 const populateHomePage = () => {
     //gets local storage and sets open tab number
-    try {
-        var openTabNumber = getLocalStorage();
-    }
+    var openTabNumber = getLocalStorage();
     //creates a default project if local storage fails
-    catch {
+    /*catch {
         const defaultProject = Project('Work');
         window.projectArray = [defaultProject]; 
     }
+    */
 
     //make html skeleton
     const parent = document.getElementById('content');

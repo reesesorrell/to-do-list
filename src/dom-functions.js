@@ -1,5 +1,5 @@
 import {Todo, Project, updateLocalStorage} from "./object-functions";
-import { format } from 'date-fns';
+import { format, isToday, isThisWeek } from 'date-fns';
 import displayAdder from "./helper";
 
 //create text input for a new porject when the add project button is clicked
@@ -80,7 +80,7 @@ function deleteProject() {
         }
     }
     projectButton.remove();
-    document.getElementById('home-tab').click();
+    browseHome();
 }
 
 //display all to-do objects in the project object
@@ -373,18 +373,41 @@ const browseHome = () => {
         }
 
     }
-    //FIXME: sort the projects in the home
     browseToProject.apply(homeProject);
 }
 
 //create a temporary today project with todos for today, then display it
 const browseToday = () => {
-    //FIXME
+    closeOpenToDoForm();
+    const todayProject = Project('Today');
+    var projectArray = window.projectArray;
+    for (var i = 0; i<projectArray.length; i++) {
+        var currentToDoList = projectArray[i].toDoList;
+        for (var j = 0; j<currentToDoList.length; j++) {
+            if (isToday(currentToDoList[j].date)) {
+                todayProject.addToDo(currentToDoList[j]);
+            }
+        }
+
+    }
+    browseToProject.apply(todayProject);
 }
 
 //create a temporary week project with todos for this week, then display it
 const browseWeek = () => {
-    //FIXME
+    closeOpenToDoForm();
+    const weekProject = Project('Week');
+    var projectArray = window.projectArray;
+    for (var i = 0; i<projectArray.length; i++) {
+        var currentToDoList = projectArray[i].toDoList;
+        for (var j = 0; j<currentToDoList.length; j++) {
+            if (isThisWeek(currentToDoList[j].date)) {
+                weekProject.addToDo(currentToDoList[j]);
+            }
+        }
+
+    }
+    browseToProject.apply(weekProject);
 }
 
 export {makeProjectForm, browseToProject, addProjectToDisplay, browseHome, browseToday, browseWeek};
