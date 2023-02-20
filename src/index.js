@@ -52,6 +52,9 @@ const populateHomePage = () => {
     if (window.projectArray[0]){
         browseToProject.apply(window.projectArray[openTabNumber]);
     }
+    else {
+        document.getElementById('home-tab').click();
+    }
 }
 
 populateHomePage();
